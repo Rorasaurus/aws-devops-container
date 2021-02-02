@@ -41,7 +41,7 @@ USE-ZSH = true
 #########################
 # Secrets configuration #
 #########################
-HOST_SSH_DIR = "$(HOME)/.ssh/shirenet/aws"
+HOST_SSH_DIR = "$(HOME)/.ssh/aws"
 CONTAINER_SSH_DIR = "/home/$(USER)/.ssh"
-HOST_SECRETS_DIR = "$(HOME)/.secrets/shirenet/aws"
+HOST_SECRETS_DIR = "$(HOME)/.secrets/aws"
 CONTAINER_SECRETS_DIR = "/home/$(USER)/.secrets"
