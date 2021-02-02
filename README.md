@@ -1,10 +1,10 @@
-# container-development-environment
+# aws-devops-container
 
-A development environment, contained within a Docker or Podman container
+A development environment for AWS, contained within a Docker or Podman container
 
 ## Usage
 Configure the required options within the config file.
 
-Currently supports Terraform, Packer, Ansible, AWS, Google Cloud
+Contains Ansible, Terraform, Packer and awscli.
 
 TODO: More descriptive instructions
