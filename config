@@ -1,0 +1,47 @@
+####################
+# Docker vs Podman #
+####################
+DOCKER = false
+
+###########################
+# Terraform configuration #
+###########################
+# TERRAFORM = disabled
+TERRAFORM = 0.14.5
+
+########################
+# Packer configuration #
+########################
+# PACKER = disabled
+PACKER = 1.6.4
+
+#########################
+# Ansible configuration #
+#########################
+# ANSIBLE = disabled
+ANSIBLE = latest
+
+########################
+# awscli configuration #
+########################
+AWSCLI = latest
+
+################
+# DNF packages #
+################
+PACKAGES = "vim git python3 python3-devel python3-pip wget htop curl unzip sudo iputils"
+
+#######################
+# Shell configuration #
+#######################
+# USE-ZSH = false   <--- bash shell enabled
+# USE-ZSH = true    <--- zsh shell enabled
+USE-ZSH = true
+
+#########################
+# Secrets configuration #
+#########################
+HOST_SSH_DIR = "$(HOME)/.ssh/shirenet/aws"
+CONTAINER_SSH_DIR = "/home/$(USER)/.ssh"
+HOST_SECRETS_DIR = "$(HOME)/.secrets/shirenet/aws"
+CONTAINER_SECRETS_DIR = "/home/$(USER)/.secrets"
