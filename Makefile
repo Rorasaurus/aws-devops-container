@@ -31,11 +31,31 @@ else ifeq ($(DOCKER), false)
 RUNTIME = "podman"
 endif
 
+# Configure Terraform
+ifeq ($(TERRAFORM), latest)
+TERRAFORMV = terraform
+else ifeq ($(TERRAFORM), disabled)
+TERRAFORMV = disabled
+else
+TERRAFORMV = "terraform-$(TERRAFORM).x86_64"
+endif
+
+# Configure Packer
+ifeq ($(PACKER), latest)
+PACKERV = packer
+else ifeq ($(PACKER), disabled)
+PACKERV = disabled
+else
+PACKERV = "packer-$(PACKER).x86_64"
+endif
+
 # Configure Ansible
 ifeq ($(ANSIBLE), latest)
 ANSIBLEV = ansible
+else ifeq ($(ANSIBLE), disabled)
+ANSIBLEV = disabled
 else
-ANSIBLEV = $(ANSIBLE)
+ANSIBLEV = "ansible-$(ANSIBLE).fc$(FEDORA).noarch"
 endif
 
 # Configure AWSCLI
@@ -47,22 +67,24 @@ endif
 
 build:
 	@echo "Building with..."
-	@echo "	Terraform       : $(TERRAFORM)"
-	@echo "	Packer          : $(PACKER)"
-	@echo "	Ansible         : $(ANSIBLEV)"
-	@echo "	awscli          : $(AWSCLIV)"
+	@echo "Fedora			: $(FEDORA)"
+	@echo "Terraform       	: $(TERRAFORM)"
+	@echo "Packer          	: $(PACKER)"
+	@echo "Ansible         	: $(ANSIBLE)"
 	-@sleep 3
 	@$(RUNTIME) build \
+		--build-arg fedorav=$(FEDORA) \
 		--build-arg app=$(APP) \
 		--build-arg user=$(USER) \
-		--build-arg terraformv=$(TERRAFORM) \
-		--build-arg packerv=$(PACKER) \
+		--build-arg terraformv=$(TERRAFORMV) \
+		--build-arg packerv=$(PACKERV) \
 		--build-arg ansiblev=$(ANSIBLEV) \
 		--build-arg awscliv=$(AWSCLI) \
 		--build-arg packages=$(PACKAGES) \
 		--build-arg usezsh=$(USE-ZSH) \
 		--build-arg entry=$(ENTRY) \
 		--build-arg container_secrets=$(CONTAINER_SECRETS_DIR) \
+		--build-arg aws_secrets_file=$(AWS_SECRETS_FILE) \
 		-t $(IMAGE) .
 	@$(RUNTIME) run --init -it --name $(CONTAINER) --hostname=$(CONTAINER) \
 		-e "TERM=xterm-256color" \
