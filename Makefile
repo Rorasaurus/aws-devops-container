@@ -94,6 +94,34 @@ build:
 		--userns=keep-id \
 		$(IMAGE)
 
+build-wsl:
+	@echo "Building with..."
+	@echo "Fedora			: $(FEDORA)"
+	@echo "Terraform       	: $(TERRAFORM)"
+	@echo "Packer          	: $(PACKER)"
+	@echo "Ansible         	: $(ANSIBLE)"
+	-@sleep 3
+	@$(RUNTIME) build \
+		--build-arg fedorav=$(FEDORA) \
+		--build-arg app=$(APP) \
+		--build-arg user=$(USER) \
+		--build-arg terraformv=$(TERRAFORMV) \
+		--build-arg packerv=$(PACKERV) \
+		--build-arg ansiblev=$(ANSIBLEV) \
+		--build-arg awscliv=$(AWSCLI) \
+		--build-arg packages=$(PACKAGES) \
+		--build-arg usezsh=$(USE-ZSH) \
+		--build-arg entry=$(ENTRY) \
+		--build-arg container_secrets=$(CONTAINER_SECRETS_DIR) \
+		--build-arg aws_secrets_file=$(AWS_SECRETS_FILE) \
+		-t $(IMAGE) .
+	@$(RUNTIME) run --init -it --name $(CONTAINER) --hostname=$(CONTAINER) \
+		-e "TERM=xterm-256color" \
+		--volume $(APP_DIR):/home/$(USER)/$(APP):Z \
+		--volume $(HOST_SECRETS_DIR):$(CONTAINER_SECRETS_DIR):Z \
+		--volume $(HOST_SSH_DIR):$(CONTAINER_SSH_DIR):Z \
+		$(IMAGE)
+
 # Delete image and container
 prune:
 	-@$(RUNTIME) rm $(CONTAINER)
